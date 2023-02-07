@@ -2,6 +2,24 @@
 #include <WebServer.h>
 #include <WebSocketsServer.h>
 #include "src/basics.h"
+#include <Adafruit_PWMServoDriver.h>
+
+Adafruit_PWMServoDriver servoModules[]={Adafruit_PWMServoDriver(0x40),Adafruit_PWMServoDriver(0x41)};
+#define SERVOMIN  125 // this is the 'minimum' pulse length count (out of 4096)
+#define SERVOMAX  575 // this is the 'maximum' pulse length count (out of 4096)
+
+void setServo(uint16_t servoMotor,uint16_t angle){
+  servoModules[servoMotor/16].setPWM((servoMotor%16),0,map(angle,0, 180, SERVOMIN,SERVOMAX));
+  return;
+}
+
+void servoModuleInit(void){
+  for(auto &servoModule:servoModules){
+    servoModule.begin();
+    servoModule.setPWMFreq(60);
+  }
+  return;
+}
 
 const char *ssid = "Shagie3_EXT";
 const char *password = "Sh0233373721";
