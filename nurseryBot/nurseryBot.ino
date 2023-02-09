@@ -10,18 +10,20 @@ Adafruit_PWMServoDriver servoModules[]={Adafruit_PWMServoDriver(0x40),Adafruit_P
 #define SERVOMIN  125 // this is the 'minimum' pulse length count (out of 4096)
 #define SERVOMAX  650 // this is the 'maximum' pulse length count (out of 4096)
 
+
 void setServo(uint16_t servoMotor,uint16_t angle){
+  static uint8_t firstRun;
+  if(!firstRun){
+    for(auto &servoModule:servoModules){
+      servoModule.begin();
+      servoModule.setPWMFreq(60);
+    }
+    firstRun =1;
+  }
   servoModules[servoMotor/16].setPWM((servoMotor%16),0,map(angle,0, 180, SERVOMIN,SERVOMAX));
   return;
 }
 
-void servoModuleInit(void){
-  for(auto &servoModule:servoModules){
-    servoModule.begin();
-    servoModule.setPWMFreq(60);
-  }
-  return;
-}
 
 const char *ssid = "Shagie3_EXT";
 const char *password = "Sh0233373721";
@@ -31,7 +33,6 @@ WebSocketsServer webSocket = WebSocketsServer(81);
 
 void setup() {
   Serial.begin(115200);
-  servoModuleInit();
   while(1){
     setServo(13,0);
     delay(500);
