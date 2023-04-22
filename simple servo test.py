@@ -56,11 +56,11 @@ def on_close(ws):
     print("Connection closed")
 
 def on_open(ws):
-    message = {"auth":"test0"}
+    message = {"type":"servo","ID":"5","VALUE":"100"},
     ws.send(json.dumps(message))
     # while True:
-    input_text =json.dumps({"servo":1024,"pos":0,"pos2":180})
-    ws.send(""+input_text+"")
+    # input_text =json.dumps({"servo":1024,"pos":0,"pos2":180})
+    # ws.send(""+input_text+"")
 
 
 
@@ -73,7 +73,7 @@ def on_open(ws):
 #     ws.on_open = on_open ##law ha receive yeb2a : on_message 
 #     ws.run_forever()
 websocket.enableTrace(True)
-ws = websocket.WebSocketApp("ws://xtensa32plus.ddns.net:51",
+ws = websocket.WebSocketApp("ws://192.168.1.12:80/",
                             on_message = on_message,
                             on_error = on_error,
                             on_close = on_close)
