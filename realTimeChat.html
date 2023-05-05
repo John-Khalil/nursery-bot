@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>web socket</title>
+	<style>
+		 body{
+            background-color :rgb(29, 29, 52);
+            color: rgb(255,255,255);
+	    }
+	</style>
+</head>
+<body>
+	<input type="text" id="txtin">
+	<button onclick="sendData()">click</button>
+	<span id="txtout"></span>
+	<script type="text/javascript">
+		// var web=new WebSocket("ws://xtensa32plus.ddns.net:51");
+		var web=new WebSocket("ws://192.168.1.10:80");
+		web.onopen=()=>{
+			//web.send("123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
+			web.send(JSON.stringify({
+				auth:"test0"
+			}));
+			console.log("hand shake");
+		}
+		web.onmessage = function (event) {
+		  console.log(event.data);
+		};
+		web.onerror = function(error) {
+			console.log(error.message);
+		};
+		function sendData(){
+			web.send(JSON.stringify({
+				type:'servo',
+				ID:'0',
+				value:100
+			}));
+			// web.send(document.getElementById("txtin").value);
+		/*	web.send(JSON.stringify({
+				auth:"test",
+				payload:document.getElementById("txtin").value
+			}));//*/
+		}
+
+
+
+		// var socket = new WS2S("192.168.1.55").newSocket()
+
+		// socket.onReady = () => {
+		//   socket.connect("192.168.1.55", 80)
+		//   socket.send("GET / HTTP/1.1\r\nHost: feling.io\r\nConnection: close\r\n\r\n")
+		// }
+
+		// socket.onRecv = (data) => {
+		//   console.log('onRecv', data)
+		// }
+
+	</script>
+</body>
+</html>

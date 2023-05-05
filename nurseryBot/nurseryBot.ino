@@ -61,8 +61,9 @@ void setup() {
   server.onData([&](uint8_t *data){
     deserializeJson(doc, (char*)data);
     if(doc[TYPE]==std::string(SERVO)){
-      // Serial.print("servo data >> ");
-      // Serial.println((char*)data);
+      Serial.print("servo data >> ");
+      Serial.println((uint16_t)doc[ID]);
+      Serial.println((uint16_t)doc[VALUE]);
       setServo(doc[ID],doc[VALUE]);
     }
 
@@ -93,9 +94,9 @@ void setup() {
   });
 
 
-  server.onData([&](uint8_t *data){
-    Serial.println((char*)data);
-  });
+  // server.onData([&](uint8_t *data){
+  //   Serial.println((char*)data);
+  // });
 
   _delay_ms(-1UL);
 }
